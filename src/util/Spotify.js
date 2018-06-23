@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 const clientId = "e35f357dac434ff2839e25135d3d5808";
 const urlRedirect = "http://localhost:3000/";
 let accessToken = "";
@@ -53,6 +54,7 @@ const Spotify = {
         return response.json();
       }).then(jsonResponse=>{
           const userId = jsonResponse.id;
+          console.log(userId);
           return fetch(`https://api.spotify.com/v1/users/{user_id}/playlists`,{
             method: 'POST',
             hearders: headers,
@@ -61,6 +63,7 @@ const Spotify = {
               return response.json();
           }).then(jsonResponse=>{
             let playlistId= jsonResponse.id;
+            console.log(playlistId)
             return fetch('https://api.spotify.com/v1/users//v1/users/{user_id}/playlists/{playlist_id}/tracks',{
               method: 'POST',
               hearders: headers,
