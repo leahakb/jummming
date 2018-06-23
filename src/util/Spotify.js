@@ -13,22 +13,24 @@ const Spotify = {
       const isExpiresIn =  window.location.href.match(/expires_in=([^&]*)/);
 
     if(isAccessToken && isExpiresIn){
-      accessToken = isAccessToken;
-      const expiresIn = isExpiresIn;
+      accessToken = isAccessToken[1];
+      const expiresIn = Number(isExpiresIn[1]);
       window.setTimeout(() => accessToken = '', expiresIn * 1000);
       window.history.pushState('Access Token', null, '/');
-      return accessToken;
     }
     else{
       window.location =
       `${spotifyUrl}?client_id=${clientId}&redirect_url=${urlRedirect}`;
+      return accessToken;
     }
   },
   search(searchTerm){
+    accessToken = this.getAccessToken();
     return fetch('https://api.spotify.com/v1/search?type=track&q={searchTerm}',{
       headers: {
         Authorization: `Bearer ${accessToken}`
       }
+      // convert the response to json
     }).then(response=>{
       return response.json();
     }).then(jsonResponse=>{
@@ -50,20 +52,24 @@ const Spotify = {
       }
       return fetch('https://api.spotify.com/v1/me',{
         headers: headers
+        // convert the response to json
       }).then(response=>{
         return response.json();
       }).then(jsonResponse=>{
+        // Set the userId to the returned Id
           const userId = jsonResponse.id;
           console.log(userId);
           return fetch(`https://api.spotify.com/v1/users/{user_id}/playlists`,{
             method: 'POST',
             hearders: headers,
             body: JSON.stringify({name: playlistName})
+            // convert the response to json
           }).then(response=>{
               return response.json();
           }).then(jsonResponse=>{
+            // Set playlistId to the returned playlist Id
             let playlistId= jsonResponse.id;
-            console.log(playlistId)
+            console.log(playlistId);
             return fetch('https://api.spotify.com/v1/users//v1/users/{user_id}/playlists/{playlist_id}/tracks',{
               method: 'POST',
               hearders: headers,
@@ -73,6 +79,7 @@ const Spotify = {
       });
     }
     else{
+      //if playlist is empty just return
       return;
     }
   }
