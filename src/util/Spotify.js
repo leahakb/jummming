@@ -26,8 +26,8 @@ const Spotify = {
     }
   },
   search(searchTerm){
-    const accessToken = Spotify.getAccessToken();
-    const searchTermUrl="https://api.spotify.com/v1/search?type=TRACK";
+    const accessToken = this.getAccessToken();
+    const searchTermUrl="https://api.spotify.com/v1/search?type=track";
     return fetch('${searchTermUrl}&q={searchTerm}',{
       headers: {
         Authorization: `Bearer ${accessToken}`
@@ -35,6 +35,7 @@ const Spotify = {
       // convert the response to json
     }).then(response=>{
       if(response.ok){
+        return response.json();
       }
       throw new Error('Request failed!');
     },networkError => {
