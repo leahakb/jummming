@@ -5,24 +5,12 @@ import SearchResults from '../SearchResults/SearchResults';
 import Playlist from '../Playlist/Playlist';
 import Spotify from '../../util/Spotify'
 
-/*const playlistTracks= {
-  name: 'NameTracks',
-  artist: 'ArtistTracks',
-  album: 'AlbumTracks',
-  id: 'IdTracks'
-};*/
-
 class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      searchResults: [/*{
-        name:'searchName',
-        artist:'searchArtist',
-        album:'searchAlbum',
-        id:'searchID'
-      }*/],
-      playlistName: '',
+      searchResults: [],
+      playlistName: 'New Playlist',
       playlistTracks: []
   };
 
@@ -34,9 +22,9 @@ class App extends React.Component {
   }
 
   addTrack(track) {
-    if (!this.state.playlistTracks.find(playlistTracks => playlistTracks.id === track.id))
+    let tracks = this.state.playlistTracks;
+    if (!tracks.find(playlistTrack => playlistTrack.id === track.id))
     {
-      let tracks = this.state.playlistTrack;
       tracks.push(track);
       this.setState({playlistTracks: tracks});
     }
@@ -78,9 +66,6 @@ class App extends React.Component {
   }
 
   render() {
-    console.log(this.searchResults);
-    console.log(this.state.playlistName);
-    console.log(this.state.playlistTracks);
     return (
       <div>
         <h1>Ja<span className="highlight">mmm</span>ing</h1>
