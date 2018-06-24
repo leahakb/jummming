@@ -27,27 +27,26 @@ const Spotify = {
   },
   search(searchTerm){
     const accessToken = this.getAccessToken();
-    const searchTermUrl="https://api.spotify.com/v1/search?type=track";
-    return fetch('${searchTermUrl}&q={searchTerm}',{
+    const searchTermUrl = "https://api.spotify.com/v1/search?type=track";
+    const header = {
       headers: {
-        Authorization: `Bearer ${accessToken}`
-      }
-      // convert the response to json
-    }).then(response=>{
-      if(response.ok){
+        Authorization: `Bearer ${accessToken}`}
+      };
+    return fetch('${searchTermUrl}&q={searchTerm}', header).then(response=>{
         return response.json();
-      }
-      throw new Error('Request failed!');
-    },networkError => {
-        console.log(networkError.message);
     }).then(jsonResponse=>{
-      return jsonResponse.tracks.map(track=>({
+      if(!jsonResponse.tracks){
+        return [];
+      }
+      return jsonResponse.tracks.map(track=>{
+        return {
         id: track.id,
         name: track.name,
         artist: track.artists[0].name,
         album: track.album.name,
         uri: track.uri
-      }));
+      };
+    });
     });
   },
 

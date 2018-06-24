@@ -16,12 +16,12 @@ class App extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      searchResults: [{
+      searchResults: [/*{
         name:'searchName',
         artist:'searchArtist',
         album:'searchAlbum',
         id:'searchID'
-      }],
+      }*/],
       playlistName: '',
       playlistTracks: []
   };
@@ -43,7 +43,7 @@ class App extends React.Component {
   }
 
   removeTrack(track){
-    const removeTrack = this.state.playlistTracks.filter(playlistTrack => track.id !== playlistTrack.id);
+    let removeTrack = this.state.playlistTracks.filter(playlistTrack => track.id !== playlistTrack.id);
     this.setState({playlistTracks: removeTrack});
   }
 
@@ -78,6 +78,7 @@ class App extends React.Component {
   }
 
   render() {
+    console.log(this.searchResults);
     console.log(this.state.playlistName);
     console.log(this.state.playlistTracks);
     return (
