@@ -25,8 +25,10 @@ class App extends React.Component {
     let tracks = this.state.playlistTracks;
     if (!tracks.find(playlistTrack => playlistTrack.id === track.id))
     {
-      tracks.push(track);
-      this.setState({playlistTracks: tracks});
+      //used concat two arrays (this method creates a copy of an array).
+      //avoid using push because it directly changes the array and causes mutation of state
+      let addTracks = tracks.concat(track);
+      this.setState({playlistTracks: addTracks});
     }
   }
 
@@ -45,15 +47,13 @@ class App extends React.Component {
     let tracks = this.state.playlistTracks;
       if(tracks.length && this.state.playlistName) {
         let trackURIs = tracks.map(trackIndex => trackIndex.uri);
-        Spotify.savePlaylist(this.state.playlistName, trackURIs);
-      }
-      else {
-        //.then(() => {
+        Spotify.savePlaylist(this.state.playlistName, trackURIs).then(() => {
+          //Use .then() instead of else to reset the Playlist's state after the save playlist request is resolved
           this.setState({
             playlistName: 'New Playlist',
             playlistTracks: []
           });
-        //});
+        });
       }
     }
 
